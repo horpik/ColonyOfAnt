@@ -6,7 +6,10 @@ namespace ColonyOfAnt
     {
         public static void Main(string[] args)
         {
-            Colony colony = new Colony();
+            Queen queen = new Queen();
+            // string name, int countWorkers, int countWarriors, string nameSpecial
+            Colony colony = new Colony(queen, "зеленые", 18,6, "стрекоза");
+            
             List<Heap> heaps = new List<Heap>(){new(new Dictionary<string, int>() {{"веточка", 10},})};
             Dragonfly dragonfly = new Dragonfly(colony);
             AdvancedBrigadier advancedBrigadier = new AdvancedBrigadier("особый", colony);

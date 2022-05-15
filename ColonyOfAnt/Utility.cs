@@ -11,11 +11,12 @@ namespace ColonyOfAnt
 
         public static readonly List<string> existingResource = new List<string>
             {"веточка", "листик", "камушек", "росинка"};
-
+        
         public static T RandomElement<T>(this List<T> list)
         {
             return list[rnd.Next(list.Count)];
         }
+        
     }
 
     public struct BackpackResource
@@ -34,6 +35,5 @@ namespace ColonyOfAnt
             this.count = count;
             this.type = type;
         }
-        
     }
 }

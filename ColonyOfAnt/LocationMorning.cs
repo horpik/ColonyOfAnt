@@ -26,10 +26,14 @@ namespace ColonyOfAnt
 
             foreach (var ant in AllAnts)
             {
-                if (ant.myModifier.Contains("бригадир") && ant.myClass == "рабочий" ||
-                    ant.myModifier.Contains("эпический"))
+                if (ant.myModifier.Contains("бригадир") && ant.myClass == "рабочий")
                 {
                     ant.ModifierAction(heap, AllAnts);
+                }
+
+                if (ant.myModifier.Contains("эпический"))
+                {
+                    ant.ModifierAction(heap, AllAnts, this);
                 }
             }
         }

@@ -49,6 +49,7 @@
         <Compile Include="Common.cs" />
         <Compile Include="CommonPersistent.cs" />
         <Compile Include="Dragonfly.cs" />
+        <Compile Include="Elite.cs" />
         <Compile Include="Heap.cs" />
         <Compile Include="Legendary.cs" />
         <Compile Include="LegendarySkinny.cs" />
