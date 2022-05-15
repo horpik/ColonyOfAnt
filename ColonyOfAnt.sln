@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColonyOfAnt", "ColonyOfAnt\ColonyOfAnt.csproj", "{C52A317B-5B56-4217-A837-6D86872AFADB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C52A317B-5B56-4217-A837-6D86872AFADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C52A317B-5B56-4217-A837-6D86872AFADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C52A317B-5B56-4217-A837-6D86872AFADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C52A317B-5B56-4217-A837-6D86872AFADB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
