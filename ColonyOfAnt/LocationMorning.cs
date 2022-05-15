@@ -7,7 +7,6 @@ namespace ColonyOfAnt
 {
     public class LocationMorning : Location
     {
-        private List<Ant> AllAnts = new List<Ant>();
         private List<List<Ant>> AntOnHeapFromColony;
         private List<List<List<Ant>>> AntOnHeap;
 
@@ -18,6 +17,7 @@ namespace ColonyOfAnt
 
         protected override void ActionOnHeap(Heap heap, List<List<Ant>> Ants)
         {
+            var AllAnts = new List<Ant>();
             // AllAnts - список муравьёв со всех колоний
             foreach (var listAnts in Ants)
             {
