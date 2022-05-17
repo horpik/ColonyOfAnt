@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ColonyOfAnt
 {
     public class Advanced : Ant
@@ -7,6 +9,7 @@ namespace ColonyOfAnt
         // <продвинутый опытный> РАБОЧИЙ(здоровье=6, защита=2) может брать 2 ресурса: 'росинка или росинка' за раз; может брать любой тип ресурса.
         public Advanced(string UnitClass, Colony colony)
         {
+            myModifier = new List<string>(){"продвинутый"};
             InitializingParameters(6, 2, 4, UnitClass, colony, new int[2] {2, 1}, new int[2]{2,1});
         }
     }

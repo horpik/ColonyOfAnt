@@ -18,7 +18,6 @@ namespace ColonyOfAnt
         // первый индекс - количество атак, второй - сила укуса
         protected int[] ICanAttak = new int[2] {0, 0};
         public string myClass { get; protected set; }
-        public bool IHaveModifier = false;
 
 
         public void Attack(List<Ant> enemyAnts)
@@ -27,12 +26,12 @@ namespace ColonyOfAnt
             var allNotInvulnerable = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
             var allNotAlive = enemyAnts.Any(ant => ant.isAlive);
             var count = 0;
-           
+
             while (count != ICanAttak[0] && allNotInvulnerable && allNotAlive)
             {
                 allNotInvulnerable = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
                 allNotAlive = enemyAnts.Any(ant => ant.isAlive);
-                
+
 
                 var ant = enemyAnts.RandomElement();
 
@@ -83,7 +82,7 @@ namespace ColonyOfAnt
             {
                 var count = 0;
                 var keys = Backpack.Select(item => item.Type()).ToList();
-              
+
                 while (count != ICanTakeResource[1])
                 {
                     // проверяем, что из кучи можно что-то взять
@@ -125,7 +124,6 @@ namespace ColonyOfAnt
             var keys = Backpack.Select(item => item.Type()).ToList();
             while (count != ICanTakeResource)
             {
-               
                 // проверяем, что из кучи можно что-то взять
                 if (!heap.ResourcesAvailable(keys)) break;
 
@@ -188,7 +186,6 @@ namespace ColonyOfAnt
             this.defense = defense;
             this.myClass = myClass;
             this.myColony = myColony;
-            myModifier = new List<string> {""};
             switch (myClass)
             {
                 case "воин":
@@ -203,7 +200,7 @@ namespace ColonyOfAnt
                     for (var i = 0; i < ICanTakeResource[0]; i++)
                     {
                         BackpackResource resource = new BackpackResource();
-                        
+
                         resource.CreateBackpack(0, existingResource.RandomElement());
                         Backpack.Add(resource);
                     }
@@ -225,10 +222,45 @@ namespace ColonyOfAnt
             defense = (int) (defense / 2);
         }
 
-
         public virtual void ModifierAction(Heap heap, List<Ant> ants, Location location)
         {
         }
 
+        public void DescribeItselfFull()
+        {
+            Console.Write($"Тип: {string.Join(" ", myModifier)}\n" +
+                          $"--- Параметры: здоровье: {hp} защита: {defense}");
+            if (myClass == "воин")
+            {
+                Console.WriteLine($" Урон: {damage}");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+
+            Console.WriteLine($"--- Королева: {myColony.queen.name}");
+        }
+
+        public virtual void DescribeItselfBriefly()
+        {
+            Console.Write($"Тип: {string.Join(" ", myModifier)}\n" +
+                          $"--- Параметры: здоровье: {hp} защита: {defense}");
+            if (myClass == "воин")
+            {
+                Console.WriteLine($" Урон: {damage}");
+            }
+            else
+            {
+                Console.WriteLine();
+            }
+        }
+
+        public void DescribeQueen()
+        {
+            Console.WriteLine($"Королева: {myColony.queen.name} \n" +
+                              $"Личинок: {myColony.queen.larvae}\n" +
+                              $"--- Параметры: здоровье {myColony.queen.hp}, защита {myColony.queen.defense}, урон {myColony.queen.damage}");
+        }
     }
 }

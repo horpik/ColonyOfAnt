@@ -12,8 +12,13 @@ namespace ColonyOfAnt
             World world = new World();
             while (DaysBeforeDisaster > 0)
             {
+                world.TellAboutWorld();
                 world.NextDay();
+                world.TellAboutColony();
+                DaysHavePassed += 1;
                 DaysBeforeDisaster -= 1;
+                Console.ReadLine();
+                
             }
 
             Console.WriteLine();

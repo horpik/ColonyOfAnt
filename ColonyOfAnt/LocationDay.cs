@@ -18,8 +18,6 @@ namespace ColonyOfAnt
 
         protected override void ActionOnHeap(Heap heap, List<List<Ant>> ListAntColony)
         {
-            
-            Console.WriteLine("start");
             foreach (var thisColony in ListAntColony)
             {
                 var enemyColony = new List<Ant>();
@@ -31,11 +29,10 @@ namespace ColonyOfAnt
                 foreach (var ant in thisColony)
                 {
                     if (!ant.isAlive) continue;
-                    
+
                     if (ant.myClass == "рабочий")
                     {
                         ant.TakeResource(heap);
-                        
                     }
 
                     if (ant.myClass == "воин")
@@ -52,8 +49,6 @@ namespace ColonyOfAnt
                     }
                 }
             }
-
-            Console.WriteLine("finish");
         }
     }
 }

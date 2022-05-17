@@ -14,8 +14,7 @@ namespace ColonyOfAnt
 
         public AdvancedExperienced(string UnitClass, Colony colony) : base(UnitClass, colony)
         {
-            IHaveModifier = true;
-            myModifier = new List<string>() {"опытный"};
+            myModifier.Add("опытный");
             Backpack = new List<BackpackResource>();
             for (int i = 0; i < 4; i++)
             {

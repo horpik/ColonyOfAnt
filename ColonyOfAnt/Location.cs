@@ -50,12 +50,6 @@ namespace ColonyOfAnt
                     }
 
                     startIndex[i] = endIndex[i - 1] + 1;
-                    if (startIndex[i] != endIndex[i - 1] + 1)
-                    {
-                        Console.WriteLine($"{startIndex[i]} --- {endIndex[i - 1] + 1}");
-                        startIndex[i] = endIndex[i - 1] + 1;
-                    }
-
                     endIndex[i] = rnd.Next(startIndex[i], listAnt.Count);
                 }
 

@@ -3,7 +3,7 @@ using System.Linq;
 using static ColonyOfAnt.Utility;
 namespace ColonyOfAnt
 {
-    public class Dragonfly : Ant
+    public class Dragonfly : SpecialInsect
     {
         public Dragonfly(Colony colony)
         {

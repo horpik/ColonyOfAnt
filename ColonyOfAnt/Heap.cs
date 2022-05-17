@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,18 +48,14 @@ namespace ColonyOfAnt
             return false;
         }
 
-
-        public bool ResourcesExist()
+        public void DescribeItself()
         {
             foreach (var resource in ResourceInHeap)
             {
-                if (resource.Value > 0)
-                {
-                    return true;
-                }
+                Console.Write($"{resource.Key} = {resource.Value} ");
             }
 
-            return false;
+            Console.WriteLine();
         }
     }
 }

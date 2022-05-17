@@ -14,8 +14,7 @@ namespace ColonyOfAnt
 
         public AdvancedBrigadier(string UnitClass, Colony colony) : base(UnitClass, colony)
         {
-            IHaveModifier = true;
-            myModifier = new List<string>(){"бригадир"};
+            myModifier.Add("бригадир");
         }
         public override void ModifierAction(Heap heap, List<Ant> ants, Location location)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using static ColonyOfAnt.Utility;
@@ -15,11 +16,12 @@ namespace ColonyOfAnt
         public World()
         {
             Colony colony_green = new Colony("зеленые", 18, 6, "стрекоза");
-            Queen queen_green = new Queen("Ольга", 20, 5, 15, rnd.Next(2,3), rnd.Next(3,4), false,colony_green);
+            Queen queen_green = new Queen("Ольга", 20, 5, 15, rnd.Next(2, 3), rnd.Next(3, 4), false, colony_green);
             colony_green.AddQueen(queen_green);
 
             Colony colony_redheads = new Colony("рыжие", 10, 5, "бабочка");
-            Queen queen_redheads = new Queen("Екатерина", 28, 9, 18, rnd.Next(3,4), rnd.Next(2,3), false,colony_green);
+            Queen queen_redheads =
+                new Queen("Екатерина", 28, 9, 18, rnd.Next(3, 4), rnd.Next(2, 3), false, colony_green);
             colony_redheads.AddQueen(queen_redheads);
 
             Heap heap1 = new Heap(new Dictionary<string, int>()
@@ -91,6 +93,42 @@ namespace ColonyOfAnt
             LocationMorning locationMorning = new LocationMorning(heaps_time, ants_time);
             LocationDay locationDay = new LocationDay(heaps_time, ants_time);
             LocationEvening locationEvening = new LocationEvening(heaps_time, ants_time);
+        }
+
+        public void TellAboutWorld()
+        {
+            Console.WriteLine();
+            Console.WriteLine($"День {DaysHavePassed} (до засухи {DaysBeforeDisaster} дней)\n" +
+                              $"-------------------");
+
+            foreach (var colony in colonies)
+            {
+                colony.DescribeItselBriefly();
+                Console.WriteLine();
+            }
+
+            for (int i = 0; i < heaps.Count; i++)
+            {
+                Console.Write($"Куча {i + 1}: ");
+                heaps[i].DescribeItself();
+            }
+
+            Console.WriteLine();
+        }
+
+        public void TellAboutColony()
+        {
+            Console.WriteLine("Введите номер колонии");
+            for (int i = 0; i < colonies.Count; i++)
+            {
+                Console.WriteLine($"Колония {i + 1}:");
+                colonies[i].DescribeItselBriefly();
+                Console.WriteLine();
+            }
+
+            var colonySelection= Convert.ToInt16(Console.ReadLine());
+            Console.WriteLine();
+            colonies[colonySelection-1].DescribeItselfFull();
         }
     }
 }

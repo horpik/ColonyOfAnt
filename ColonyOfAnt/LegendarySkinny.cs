@@ -6,8 +6,7 @@ namespace ColonyOfAnt
     {
         public LegendarySkinny(string UnitClass, Colony colony) : base(UnitClass, colony)
         {
-            IHaveModifier = true;
-            myModifier = new List<string>{"худой"};
+            myModifier.Add("худой");
         }
     }
 }

@@ -9,8 +9,7 @@ namespace ColonyOfAnt
 
         public CommonPersistent(string UnitClass, Colony colony) : base(UnitClass, colony)
         {
-            IHaveModifier = true;
-            myModifier = new List<string>{"настойчивый"};
+            myModifier.Add("настойчивый");
         }
         
     }

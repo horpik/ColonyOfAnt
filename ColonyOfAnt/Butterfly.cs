@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ColonyOfAnt
 {
-    public class Butterfly : Ant
+    public class Butterfly : SpecialInsect
     {
         public Butterfly(Colony colony)
         {
@@ -16,7 +16,7 @@ namespace ColonyOfAnt
             ICanTakeResource[0] = 0;
             ICanTakeResource[1] = 0;
         }
-
+        
         public override void ModifierAction(Heap heap, List<Ant> ants, Location location)
         {
             foreach (var ant in ants)

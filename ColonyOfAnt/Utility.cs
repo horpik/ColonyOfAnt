@@ -9,6 +9,8 @@ namespace ColonyOfAnt
     {
         public static readonly Random rnd = new Random();
         public static int DaysBeforeDisaster = 13;
+        public static int DaysHavePassed = 0;
+        
         
         public static readonly List<string> existingResource = new() {"веточка", "листик", "камушек", "росинка"};
         public static readonly List<string> existingSpecial = new() {"стрекоза", "бабочка"};
