@@ -16,21 +16,26 @@ namespace ColonyOfAnt
             nameLocation = "день";
         }
 
-        protected override void ActionOnHeap(Heap heap, List<List<Ant>> ListColony)
+        protected override void ActionOnHeap(Heap heap, List<List<Ant>> ListAntColony)
         {
-            foreach (var thisColony in ListColony)
+            
+            Console.WriteLine("start");
+            foreach (var thisColony in ListAntColony)
             {
                 var enemyColony = new List<Ant>();
-                foreach (var listAnt in ListColony.Where(listAnt => listAnt != thisColony))
+                foreach (var listAnt in ListAntColony.Where(listAnt => listAnt != thisColony))
                 {
                     enemyColony.AddRange(listAnt);
                 }
 
                 foreach (var ant in thisColony)
                 {
+                    if (!ant.isAlive) continue;
+                    
                     if (ant.myClass == "рабочий")
                     {
                         ant.TakeResource(heap);
+                        
                     }
 
                     if (ant.myClass == "воин")
@@ -44,13 +49,11 @@ namespace ColonyOfAnt
                         {
                             ant.Attack(ant.myModifier.Contains("аномальный") ? thisColony : enemyColony);
                         }
-                        if (ant.myModifier.Contains("мирный") && !ant.myModifier.Contains("ленивый"))
-                        {
-                            ant.TakeResource(heap);
-                        }
                     }
                 }
             }
+
+            Console.WriteLine("finish");
         }
     }
 }

@@ -13,55 +13,65 @@ namespace ColonyOfAnt
             {"росинка", 0}
         };
 
-        private string name;
-        private Queen queen;
+        public string name { get; private set; }
+        public Queen queen { get; private set; }
         private int countWorkers;
         private int countWarriors;
         private int countSpecial;
 
         // добавить специального насекомого
-        private List<Ant> Ants = new List<Ant>();
+        public List<Ant> Ants { get; private set; }
 
-        public Colony(Queen queen, string name, int countWorkers, int countWarriors, string nameSpecial)
+        public Colony(string name, int countWorkers, int countWarriors, string nameSpecial)
         {
-            this.queen = queen;
+            Ants = new List<Ant>();
             this.name = name;
             this.countWorkers = countWorkers;
             this.countWarriors = countWarriors;
 
             for (int i = 0; i < countWorkers; i++)
             {
-                CreateAnAnt(Ants, "рабочий");
+                CreateAnAnt("рабочий");
             }
 
             for (int i = 0; i < countWarriors; i++)
             {
-                CreateAnAnt(Ants, "воин");
+                CreateAnAnt("воин");
             }
 
             switch (nameSpecial)
             {
                 case "стрекоза":
-                    Ants.Add( new Dragonfly(this));
+                    Ants.Add(new Dragonfly(this));
                     break;
                 case "бабочка":
-                    Ants.Add( new Butterfly(this));
+                    Ants.Add(new Butterfly(this));
                     break;
             }
-            
         }
 
-        private void CreateAnAnt(List<Ant> ants, string nameClass)
+        public void AddQueen(Queen queen)
+        {
+            this.queen = queen;
+        }
+
+        public void CreateAnAnt(string nameClass)
         {
             var existingAnt = new List<Ant>
             {
-                new Advanced(nameClass, this), new AdvancedBrigadier(nameClass, this),
-                new AdvancedExperienced(nameClass, this), new Common(nameClass, this),
-                new CommonPersistent(nameClass, this), new Legendary(nameClass, this),
-                new LegendarySkinny(nameClass, this), new Elite(nameClass, this)
+                new AdvancedBrigadier(nameClass, this),
+                new CommonPersistent(nameClass, this),
+                new LegendarySkinny(nameClass, this)
             };
+            // var existingAnt = new List<Ant>
+            // {
+            //     new Advanced(nameClass, this), new AdvancedBrigadier(nameClass, this),
+            //     new AdvancedExperienced(nameClass, this), new Common(nameClass, this),
+            //     new CommonPersistent(nameClass, this), new Legendary(nameClass, this),
+            //     new LegendarySkinny(nameClass, this), new Elite(nameClass, this)
+            // };
 
-            ants.Add(existingAnt.RandomElement());
+            Ants.Add(existingAnt.RandomElement());
         }
 
         private void QuantityCountByClass()
@@ -85,6 +95,20 @@ namespace ColonyOfAnt
                 }
             }
         }
+
+        public void GetResource(Ant ant)
+        {
+            foreach (var resource in ant.Backpack)
+            {
+                ResourceInColony[resource.Type()] += resource.Value();
+            }
+        }
+
+        public void RemoveAnt(Ant ant)
+        {
+            Ants.Remove(ant);
+        }
+
         // TODO создать метод для дополнительного эффекта
     }
 }

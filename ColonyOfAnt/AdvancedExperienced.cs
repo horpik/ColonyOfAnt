@@ -16,10 +16,12 @@ namespace ColonyOfAnt
         {
             IHaveModifier = true;
             myModifier = new List<string>() {"опытный"};
-            Backpack = new List<BackpackResource>(4);
+            Backpack = new List<BackpackResource>();
             for (int i = 0; i < 4; i++)
             {
-                Backpack[i].AddElement(0, existingResource[i]);
+                BackpackResource resource = new BackpackResource();
+                resource.CreateBackpack(0, existingResource[i]);
+                Backpack.Add(resource);
             }
         }
     }

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using static ColonyOfAnt.Utility;
 
 namespace ColonyOfAnt
 {
@@ -6,19 +9,14 @@ namespace ColonyOfAnt
     {
         public static void Main(string[] args)
         {
-            Queen queen = new Queen();
-            // string name, int countWorkers, int countWarriors, string nameSpecial
-            Colony colony = new Colony(queen, "зеленые", 18,6, "стрекоза");
-            
-            List<Heap> heaps = new List<Heap>(){new(new Dictionary<string, int>() {{"веточка", 10},})};
-            Dragonfly dragonfly = new Dragonfly(colony);
-            AdvancedBrigadier advancedBrigadier = new AdvancedBrigadier("особый", colony);
-            List<Ant> units = new List<Ant>();
-            units.Add(dragonfly);
-            units.Add(advancedBrigadier);
-            List<List<Ant>> allUnits = new List<List<Ant>>();
-            allUnits.Add(units);
-            LocationDay locationDay = new LocationDay(heaps,allUnits);
+            World world = new World();
+            while (DaysBeforeDisaster > 0)
+            {
+                world.NextDay();
+                DaysBeforeDisaster -= 1;
+            }
+
+            Console.WriteLine();
         }
     }
 }

@@ -15,23 +15,19 @@ namespace ColonyOfAnt
             nameLocation = "утро";
         }
 
-        protected override void ActionOnHeap(Heap heap, List<List<Ant>> Ants)
+        protected override void ActionOnHeap(Heap heap, List<List<Ant>> ListAntColony)
         {
             var AllAnts = new List<Ant>();
             // AllAnts - список муравьёв со всех колоний
-            foreach (var listAnts in Ants)
+            foreach (var listAnts in ListAntColony)
             {
                 AllAnts.AddRange(listAnts);
             }
 
             foreach (var ant in AllAnts)
             {
-                if (ant.myModifier.Contains("бригадир") && ant.myClass == "рабочий")
-                {
-                    ant.ModifierAction(heap, AllAnts);
-                }
-
-                if (ant.myModifier.Contains("эпический"))
+                if (ant.myModifier.Contains("бригадир") && ant.myClass == "рабочий" ||
+                    ant.myModifier.Contains("эпический"))
                 {
                     ant.ModifierAction(heap, AllAnts, this);
                 }

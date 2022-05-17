@@ -11,6 +11,7 @@ namespace ColonyOfAnt
             defense = 7;
             damage = 13;
             myClass = "особый";
+            myColony = colony;
             myModifier = new List<string>() {"ленивый", "обычный", "агрессивный", "аномальный"};
             ICanAttak[0] = 3;
             ICanAttak[1] = 2;

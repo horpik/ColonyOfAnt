@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static ColonyOfAnt.Utility;
@@ -7,31 +8,41 @@ namespace ColonyOfAnt
     public abstract class Ant : Unit
     {
         // сумка с ресурсами и сколько и по сколько урона он может атаковать
-        protected List<BackpackResource> Backpack;
+        public List<BackpackResource> Backpack { get; protected set; }
+
+        public List<string> myModifier { get; protected set; }
 
         // первый индекс - сколько ресурсов в рюкзаке, второй - сколько из них за раз может брать 
         protected int[] ICanTakeResource = new int[2] {0, 0};
 
         // первый индекс - количество атак, второй - сила укуса
         protected int[] ICanAttak = new int[2] {0, 0};
-
-        protected Colony myColony;
+        public string myClass { get; protected set; }
         public bool IHaveModifier = false;
 
 
         public void Attack(List<Ant> enemyAnts)
         {
             if (enemyAnts.Count == 0) return;
-            var flag = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
+            var allNotInvulnerable = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
+            var allNotAlive = enemyAnts.Any(ant => ant.isAlive);
             var count = 0;
-            while (count != ICanAttak[0] && flag)
+           
+            while (count != ICanAttak[0] && allNotInvulnerable && allNotAlive)
             {
+                allNotInvulnerable = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
+                allNotAlive = enemyAnts.Any(ant => ant.isAlive);
+                
+
                 var ant = enemyAnts.RandomElement();
+
+                if (!ant.isAlive) continue;
+
                 if (ant.myModifier.Contains("худой"))
                 {
                     var ant_t = ant;
                     ant = enemyAnts.RandomElement();
-                    while (ant_t == ant)
+                    while (ant_t == ant && enemyAnts.Count != 1)
                     {
                         ant = enemyAnts.RandomElement();
                     }
@@ -47,13 +58,10 @@ namespace ColonyOfAnt
                 }
 
                 ant.GetDamage(damage * ICanAttak[1]);
-                if (!ant.isAlive)
-                {
-                    enemyAnts.Remove(ant);
-                }
+                allNotInvulnerable = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
+                allNotAlive = enemyAnts.Any(ant => ant.isAlive);
 
                 count += 1;
-                if (enemyAnts.Count == 0) return;
             }
         }
 
@@ -61,45 +69,81 @@ namespace ColonyOfAnt
         {
             if (ICanTakeResource[1] == Backpack.Count)
             {
-                foreach (var item in Backpack)
+                for (int i = 0; i < Backpack.Count; i++)
                 {
-                    item.AddElement(heap.ResourceExtraction(item.MyType()));
+                    var resource = new BackpackResource();
+                    var value = Backpack[i].Value();
+                    var type = Backpack[i].Type();
+                    value += heap.ResourceExtraction(type);
+                    resource.CreateBackpack(value, type);
+                    Backpack[i] = resource;
                 }
             }
             else
             {
                 var count = 0;
-                var keys = Backpack.Select(item => item.MyType()).ToList();
+                var keys = Backpack.Select(item => item.Type()).ToList();
+              
                 while (count != ICanTakeResource[1])
                 {
                     // проверяем, что из кучи можно что-то взять
                     if (!heap.ResourcesAvailable(keys)) break;
 
                     var rndElement = rnd.Next(keys.Count);
-                    if (heap.ResourceExtraction(Backpack[rndElement].MyType()) == 0) continue;
-                    Backpack[rndElement].AddElement(heap.ResourceExtraction(Backpack[rndElement].MyType()));
+                    if (heap.ResourceExtraction(Backpack[rndElement].Type()) == 0) continue;
+
+                    var resource = new BackpackResource();
+                    var value = Backpack[rndElement].Value();
+                    var type = Backpack[rndElement].Type();
+                    value += heap.ResourceExtraction(type);
+                    resource.CreateBackpack(value, type);
+                    Backpack[rndElement] = resource;
+
                     count += 1;
                 }
             }
         }
 
+        public void PutResource()
+        {
+            myColony.GetResource(this);
+
+            for (int i = 0; i < Backpack.Count; i++)
+            {
+                var resource = new BackpackResource();
+                var value = 0;
+                var type = Backpack[i].Type();
+                resource.CreateBackpack(value, type);
+                Backpack[i] = resource;
+            }
+        }
+
+
         public void TakeResource(Heap heap, int ICanTakeResource)
         {
             var count = 0;
-            var keys = Backpack.Select(item => item.MyType()).ToList();
+            var keys = Backpack.Select(item => item.Type()).ToList();
             while (count != ICanTakeResource)
             {
+               
                 // проверяем, что из кучи можно что-то взять
                 if (!heap.ResourcesAvailable(keys)) break;
 
                 var rndElement = rnd.Next(Backpack.Count);
-                if (heap.ResourceExtraction(Backpack[rndElement].MyType()) == 0) continue;
-                Backpack[rndElement].AddElement(heap.ResourceExtraction(Backpack[rndElement].MyType()));
+                if (heap.ResourceExtraction(Backpack[rndElement].Type()) == 0) continue;
+
+                var resource = new BackpackResource();
+                var value = Backpack[rndElement].Value();
+                var type = Backpack[rndElement].Type();
+                value += heap.ResourceExtraction(type);
+                resource.CreateBackpack(value, type);
+                Backpack[rndElement] = resource;
+
                 count += 1;
             }
         }
 
-        public virtual void GetDamage(double incomingDamage)
+        public void GetDamage(double incomingDamage)
         {
             if (myModifier.Any(modifeir => modifeir == "неуязвимый"))
             {
@@ -158,8 +202,10 @@ namespace ColonyOfAnt
                     Backpack = new List<BackpackResource>();
                     for (var i = 0; i < ICanTakeResource[0]; i++)
                     {
-                        Backpack.Add(new BackpackResource());
-                        Backpack[i].AddElement(0, Utility.RandomElement(existingResource));
+                        BackpackResource resource = new BackpackResource();
+                        
+                        resource.CreateBackpack(0, existingResource.RandomElement());
+                        Backpack.Add(resource);
                     }
 
                     break;
@@ -179,14 +225,10 @@ namespace ColonyOfAnt
             defense = (int) (defense / 2);
         }
 
-        public virtual void ModifierAction(Heap heap, List<Ant> ants)
-        {
-        }
 
         public virtual void ModifierAction(Heap heap, List<Ant> ants, Location location)
         {
         }
 
-        // TODO сделать метод "положить ресурсы в колонию"
     }
 }

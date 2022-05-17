@@ -7,10 +7,7 @@ namespace ColonyOfAnt
         public double hp { get; protected set; }
         public double defense { get; protected set; }
         public double damage { get; protected set; }
-        public string myClass { get; protected set; }
-        public List<string> myModifier { get; protected set; }
+        public Colony myColony { get; protected set; }
         public bool isAlive = true;
-
-        
     }
 }

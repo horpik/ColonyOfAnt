@@ -1,18 +1,21 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ColonyOfAnt
 {
     public class Heap
     {
         private Dictionary<string, int> ResourceInHeap;
-        
+
         public Heap(Dictionary<string, int> ResourceInHeap)
         {
             this.ResourceInHeap = ResourceInHeap;
         }
-        
+
         public int ResourceExtraction(string nameResource)
         {
+            if (!ResourceInHeap.Keys.Contains(nameResource)) return 0;
+
             if (ResourceInHeap[nameResource] == 0) return 0;
             ResourceInHeap[nameResource] -= 1;
             return 1;
@@ -22,14 +25,16 @@ namespace ColonyOfAnt
         {
             foreach (var item in list)
             {
-                if (ResourceInHeap[item] > 0)
+                if (ResourceInHeap.Keys.Contains(item) && ResourceInHeap[item] > 0)
                 {
                     return true;
                 }
             }
 
             return false;
-        }public bool ResourcesAvailable()
+        }
+
+        public bool ResourcesAvailable()
         {
             foreach (var item in ResourceInHeap)
             {
@@ -41,7 +46,7 @@ namespace ColonyOfAnt
 
             return false;
         }
-        
+
 
         public bool ResourcesExist()
         {

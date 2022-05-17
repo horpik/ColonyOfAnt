@@ -11,6 +11,7 @@ namespace ColonyOfAnt
             defense = 7;
             damage = 13;
             myClass = "особый";
+            myColony = colony;
             myModifier = new List<string>() {"ленивый", "неуязвимый", "мирный", "эпический"};
             ICanTakeResource[0] = 0;
             ICanTakeResource[1] = 0;
@@ -18,18 +19,17 @@ namespace ColonyOfAnt
 
         public override void ModifierAction(Heap heap, List<Ant> ants, Location location)
         {
-            location.flagEpic = true;
             foreach (var ant in ants)
             {
-                if (location.nameLocation == "утро")
+                switch (location.nameLocation)
                 {
-                    ant.IncreaseParameters();
+                    case "утро":
+                        ant.IncreaseParameters();
+                        break;
+                    case "вечер":
+                        ant.ReduceParameters();
+                        break;
                 }
-                else
-                {
-                    ant.ReduceParameters();
-                }
-                
             }
         }
     }

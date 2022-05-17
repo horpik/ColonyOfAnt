@@ -17,7 +17,7 @@ namespace ColonyOfAnt
             IHaveModifier = true;
             myModifier = new List<string>(){"бригадир"};
         }
-        public override void ModifierAction(Heap heap, List<Ant> ants)
+        public override void ModifierAction(Heap heap, List<Ant> ants, Location location)
         {
             foreach (var ant in ants.Where(ant => ant.myClass == "рабочий"))
             {
