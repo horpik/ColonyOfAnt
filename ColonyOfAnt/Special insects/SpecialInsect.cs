@@ -8,7 +8,7 @@ namespace ColonyOfAnt
         {
             Console.Write($"Тип: {string.Join(" ", myModifier)}\n" +
                           $"--- Параметры: здоровье: {hp} защита: {defense} урон: {damage}\n" +
-                          $"Модификаторы:");
+                          $"Модификаторы:\n");
             foreach (var modifier in myModifier)
             {
                 Console.Write("--- ");
@@ -27,11 +27,12 @@ namespace ColonyOfAnt
                         Console.WriteLine("атакует своих вместо врагов;");
                         break;
                     case "мирный":
-                        Console.WriteLine("группа/колония игнорирует все негативные эффекты (включая агрессивных насекомых/животных) на территории;");
+                        Console.WriteLine(
+                            "группа/колония игнорирует все негативные эффекты (включая агрессивных насекомых/животных) на территории;");
                         break;
                     case "неуязвимый":
                         Console.WriteLine("не может быть атакован войнами;");
-                        break; 
+                        break;
                     case "эпический":
                         Console.WriteLine("защита и здоровье всех в походе увеличена в двое;");
                         break;

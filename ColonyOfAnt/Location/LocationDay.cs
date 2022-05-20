@@ -20,10 +20,10 @@ namespace ColonyOfAnt
         {
             foreach (var thisColony in ListAntColony)
             {
-                var enemyColony = new List<Ant>();
+                var enemyAnt = new List<Ant>();
                 foreach (var listAnt in ListAntColony.Where(listAnt => listAnt != thisColony))
                 {
-                    enemyColony.AddRange(listAnt);
+                    enemyAnt.AddRange(listAnt);
                 }
 
                 foreach (var ant in thisColony)
@@ -37,14 +37,14 @@ namespace ColonyOfAnt
 
                     if (ant.myClass == "воин")
                     {
-                        ant.Attack(enemyColony);
+                        ant.Attack(enemyAnt);
                     }
 
                     if (ant.myClass == "особый")
                     {
                         if (ant.myModifier.Contains("агрессивный"))
                         {
-                            ant.Attack(ant.myModifier.Contains("аномальный") ? thisColony : enemyColony);
+                            ant.Attack(ant.myModifier.Contains("аномальный") ? thisColony : enemyAnt);
                         }
                     }
                 }

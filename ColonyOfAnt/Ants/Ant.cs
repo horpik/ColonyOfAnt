@@ -29,9 +29,9 @@ namespace ColonyOfAnt
 
             while (count != ICanAttak[0] && allNotInvulnerable && allNotAlive)
             {
-                allNotInvulnerable = enemyAnts.Any(ant => !ant.myModifier.Contains("неуязвимый"));
+                List<Ant> t = enemyAnts.Where(_ant => _ant.isAlive).ToList();
+                allNotInvulnerable = t.Any(ant => !ant.myModifier.Contains("неуязвимый"));
                 allNotAlive = enemyAnts.Any(ant => ant.isAlive);
-
 
                 var ant = enemyAnts.RandomElement();
 
@@ -228,16 +228,7 @@ namespace ColonyOfAnt
 
         public void DescribeItselfFull()
         {
-            Console.Write($"Тип: {string.Join(" ", myModifier)}\n" +
-                          $"--- Параметры: здоровье: {hp} защита: {defense}");
-            if (myClass == "воин")
-            {
-                Console.WriteLine($" Урон: {damage}");
-            }
-            else
-            {
-                Console.WriteLine();
-            }
+            DescribeItselfBriefly();
 
             Console.WriteLine($"--- Королева: {myColony.queen.name}");
         }

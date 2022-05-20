@@ -21,10 +21,12 @@ namespace ColonyOfAnt
         private int countWarriors;
         private int countSpecial;
 
+        private List<Ant> uniqueListOfAnts = new();
+
         // добавить специального насекомого
         public List<Ant> Ants { get; private set; }
 
-        public Colony(string name, int countWorkers, int countWarriors, string nameSpecial)
+        public Colony(string name, int countWorkers, int countWarriors, string nameInsect)
         {
             Ants = new List<Ant>();
             this.name = name;
@@ -41,15 +43,7 @@ namespace ColonyOfAnt
                 CreateAnAnt("воин");
             }
 
-            switch (nameSpecial)
-            {
-                case "стрекоза":
-                    Ants.Add(new Dragonfly(this));
-                    break;
-                case "бабочка":
-                    Ants.Add(new Butterfly(this));
-                    break;
-            }
+            CreateSpecialInsect(nameInsect);
         }
 
         public void AddQueen(Queen queen)
@@ -82,6 +76,11 @@ namespace ColonyOfAnt
         public void RemoveAnt(Ant ant)
         {
             Ants.Remove(ant);
+        }
+
+        public int SumResource()
+        {
+            return ResourceInColony.Sum(resource => resource.Value);
         }
 
         private void QuantityCountByClass()
@@ -121,13 +120,13 @@ namespace ColonyOfAnt
             {
                 Console.Write($"{resource.Key} = {resource.Value} ");
             }
+
             Console.WriteLine();
         }
 
         private void DescribeQueenFull()
         {
-            Console.WriteLine($"Королева: {queen.name} \n" +
-                              $"Личинок: {queen.larvae}\n" +
+            Console.WriteLine($"--- Королева: {queen.name}, личинок: {queen.larvae} \n" +
                               $"--- Параметры: здоровье {queen.hp}, защита {queen.defense}, урон {queen.damage}");
         }
 
@@ -161,27 +160,14 @@ namespace ColonyOfAnt
                 return;
             }
 
-            var uniqueListOfAnts = new List<Ant>();
             var countUniqueAntWorkers = new List<int>();
             var countUniqueAntWarriers = new List<int>();
             var countUniqueAntSpecial = new List<int>();
 
 
-            foreach (var t1 in Ants)
+            SearchUniqueAnt();
+            foreach (var t1 in uniqueListOfAnts)
             {
-                var counter = uniqueListOfAnts.Count;
-                var IsUnique = true;
-                for (int j = 0; j < counter; j++)
-                {
-                    if (t1.myModifier.SequenceEqual(uniqueListOfAnts[j].myModifier))
-                    {
-                        IsUnique = false;
-                        break;
-                    }
-                }
-
-                if (!IsUnique) continue;
-                uniqueListOfAnts.Add(t1);
                 countUniqueAntWorkers.Add(0);
                 countUniqueAntWarriers.Add(0);
                 countUniqueAntSpecial.Add(0);
@@ -202,16 +188,19 @@ namespace ColonyOfAnt
                 }
             }
 
+
             Console.WriteLine();
             Console.WriteLine("<<<<<<<<<<<<< Рабочие >>>>>>>>>>>>>");
             for (int i = 0; i < uniqueListOfAnts.Count; i++)
             {
                 if (countUniqueAntWorkers[i] == 0)
                 {
-                    break;
+                    continue;
                 }
+
                 uniqueListOfAnts[i].DescribeItselfBriefly();
                 Console.WriteLine($"--- Количество: {countUniqueAntWorkers[i]}");
+                Console.WriteLine();
             }
 
             Console.WriteLine();
@@ -220,33 +209,108 @@ namespace ColonyOfAnt
             {
                 if (countUniqueAntWarriers[i] == 0)
                 {
-                    break;
+                    continue;
                 }
+
                 uniqueListOfAnts[i].DescribeItselfBriefly();
                 Console.WriteLine($"--- Количество: {countUniqueAntWarriers[i]}");
+                Console.WriteLine();
             }
 
-            Console.WriteLine();
+            var flag = countUniqueAntSpecial.Any(ant => ant != 0);
+
+            if (!flag) return;
             Console.WriteLine("<<<<<<<<<<<<< Особые >>>>>>>>>>>>>");
             for (int i = 0; i < uniqueListOfAnts.Count; i++)
             {
                 if (countUniqueAntSpecial[i] == 0)
                 {
-                    break;
+                    continue;
                 }
+
                 uniqueListOfAnts[i].DescribeItselfBriefly();
                 Console.WriteLine($"--- Количество: {countUniqueAntSpecial[i]}");
+                Console.WriteLine();
             }
         }
 
-        public void ShowInformationAboutAntSpecies(Ant ant)
+
+        private void SearchUniqueAnt()
         {
-            ant.DescribeItselfBriefly();
-            int countInColony = Ants.Count(item => item.myModifier == ant.myModifier);
-            Console.WriteLine($"--- Количество: {countInColony}");
+            uniqueListOfAnts = new List<Ant>();
+            foreach (var ant in Ants)
+            {
+                var counter = uniqueListOfAnts.Count;
+                var IsUnique = true;
+                for (int j = 0; j < counter; j++)
+                {
+                    if (ant.myModifier.SequenceEqual(uniqueListOfAnts[j].myModifier))
+                    {
+                        IsUnique = false;
+                        break;
+                    }
+                }
+
+                if (!IsUnique) continue;
+                uniqueListOfAnts.Add(ant);
+            }
         }
 
+        public void TellAboutAnt()
+        {
+            SearchUniqueAnt();
 
-        // TODO создать метод для дополнительного эффекта
+            for (int i = 0; i < uniqueListOfAnts.Count; i++)
+            {
+                Console.WriteLine($"Муравей {i + 1}:");
+                uniqueListOfAnts[i].DescribeItselfBriefly();
+                Console.WriteLine();
+            }
+
+            var flag = false;
+            while (!flag)
+            {
+                Console.WriteLine("\n\n\n\nВведите 1, чтобы узнать подробнее о муравье\n" +
+                                  "Введите 2, чтобы муравьи рассказали о своей королеве\n" +
+                                  "Введите 3, чтобы продолжить\n\n");
+                var inputNumber = Convert.ToInt16(Console.ReadLine());
+                switch (inputNumber)
+                {
+                    case 1:
+                    {
+                        Console.WriteLine("Выберите номер муравья:");
+                        Console.WriteLine();
+                        var input = Convert.ToInt16(Console.ReadLine());
+                        Console.WriteLine();
+                        uniqueListOfAnts[input - 1].DescribeItselfFull();
+                        break;
+                    }
+                    case 2:
+                    {
+                        Console.WriteLine("Выберите номер муравья");
+                        var input = Convert.ToInt16(Console.ReadLine());
+                        Console.WriteLine();
+                        uniqueListOfAnts[input - 1].DescribeQueen();
+                        break;
+                    }
+                    default:
+                        flag = true;
+                        break;
+                }
+            }
+        }
+
+        public void CreateSpecialInsect(string nameInsect)
+        {
+            switch (nameInsect)
+            {
+                case "стрекоза":
+                    Ants.Add(new Dragonfly(this));
+                    break;
+                case "бабочка":
+                    Ants.Add(new Butterfly(this));
+                    break;
+            }
+        }
     }
 }

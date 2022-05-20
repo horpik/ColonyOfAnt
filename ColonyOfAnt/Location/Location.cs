@@ -37,11 +37,18 @@ namespace ColonyOfAnt
                 }
 
                 startIndex[0] = 0;
-                endIndex[0] = rnd.Next(startIndex[0] + 1, listAnt.Count);
+                if (listAnt.Count == 1)
+                {
+                    endIndex[0] = 0;
+                }
+                else
+                {
+                    endIndex[0] = rnd.Next(startIndex[0] + 1, listAnt.Count);
+                }
+
                 for (int i = 1; i < heaps.Count; i++)
                 {
-                    if (listAnt.Count == 1) break;
-                    if (endIndex[i - 1] == listAnt.Count - 1) break;
+                    if (endIndex[i - 1] == listAnt.Count - 1 || listAnt.Count == 1) break;
                     if (i == heaps.Count - 1)
                     {
                         startIndex[i] = endIndex[i - 1] + 1;

@@ -11,7 +11,6 @@ namespace ColonyOfAnt
     {
         private List<Heap> heaps;
         private List<Colony> colonies;
-        private int DaysBeforeDisaster = 13;
 
         public World()
         {
@@ -88,11 +87,11 @@ namespace ColonyOfAnt
                 ants_time.Add(colony.Ants);
             }
 
+            var locationMorning = new LocationMorning(heaps_time, ants_time);
+            var locationDay = new LocationDay(heaps_time, ants_time);
+            var locationEvening = new LocationEvening(heaps_time, ants_time);
             DaysBeforeDisaster -= 1;
-
-            LocationMorning locationMorning = new LocationMorning(heaps_time, ants_time);
-            LocationDay locationDay = new LocationDay(heaps_time, ants_time);
-            LocationEvening locationEvening = new LocationEvening(heaps_time, ants_time);
+            DaysHavePassed += 1;
         }
 
         public void TellAboutWorld()
@@ -118,7 +117,7 @@ namespace ColonyOfAnt
 
         public void TellAboutColony()
         {
-            Console.WriteLine("Введите номер колонии");
+            Console.WriteLine("Введите номер колонии:\n");
             for (int i = 0; i < colonies.Count; i++)
             {
                 Console.WriteLine($"Колония {i + 1}:");
@@ -126,9 +125,54 @@ namespace ColonyOfAnt
                 Console.WriteLine();
             }
 
-            var colonySelection= Convert.ToInt16(Console.ReadLine());
+            var colonySelection = Convert.ToInt16(Console.ReadLine());
             Console.WriteLine();
-            colonies[colonySelection-1].DescribeItselfFull();
+            colonies[colonySelection - 1].DescribeItselfFull();
+            Console.WriteLine("\nнажмите, чтобы продолжить");
+            Console.ReadKey();
+        }
+
+        public void TellAboutAnt()
+        {
+            Console.WriteLine("Введите номер колонии, в который вы хотите посмотреть на муравья:\n");
+            for (int i = 0; i < colonies.Count; i++)
+            {
+                Console.WriteLine($"Колония {i + 1}:");
+                colonies[i].DescribeItselBriefly();
+                Console.WriteLine();
+            }
+
+            var colonySelection = Convert.ToInt16(Console.ReadLine());
+            Console.WriteLine();
+            colonies[colonySelection - 1].TellAboutAnt();
+        }
+
+        public void AdditionalTask()
+        {
+            Console.WriteLine("\n== Случился дополнительный эффект!==\n");
+            if (DaysHavePassed == 11)
+            {
+                colonies.RandomElement().CreateSpecialInsect(existingSpecial.RandomElement());
+            }
+        }
+
+
+        public void ShowWinner()
+        {
+            var HeapIsEmpty = heaps.All(heap => !heap.ResourcesAvailable());
+            if (!HeapIsEmpty && DaysBeforeDisaster > 0) return;
+
+            var winner = colonies[0];
+            foreach (var colony in colonies)
+            {
+                if (colony.SumResource() > winner.SumResource())
+                {
+                    winner = colony;
+                }
+            }
+
+            Console.WriteLine("Победила следующая колония:\n\n");
+            winner.DescribeItselfFull();
         }
     }
 }

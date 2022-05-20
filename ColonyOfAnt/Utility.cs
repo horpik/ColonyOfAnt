@@ -8,7 +8,7 @@ namespace ColonyOfAnt
     public static class Utility
     {
         public static readonly Random rnd = new Random();
-        public static int DaysBeforeDisaster = 13;
+        public static int DaysBeforeDisaster = 12;
         public static int DaysHavePassed = 0;
         
         
